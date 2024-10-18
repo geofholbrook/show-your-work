@@ -1,4 +1,12 @@
-import A, { format } from "../src/main.ts";
+# show-your-work
+
+A utility for persisting arithmetic calculations and displaying the derivation
+in a human-readable format.
+
+## usage
+
+```js
+import A, { format } from "jsr:@geof/show-your-work";
 
 const calc1 = format(A(1, "x").add(A(2, "y"), "sum"));
 console.log(calc1);
@@ -7,3 +15,4 @@ console.log(calc1);
 const calc2 = A(1, "x").add(A(2, "y").multiply(A(3, "z")), "myResult");
 console.log(format(calc2));
 // (1 (x) + (2 (y) * 3 (z))) = 7 (myResult)
+```
