@@ -1,4 +1,4 @@
-import { type IArithmeticNode, symbolMap } from "./main.ts";
+import { type IArithmeticNode, symbolMap } from "./ArithmeticNode.ts";
 import { dim } from "@std/fmt/colors";
 
 export function format(node: IArithmeticNode, depth = 0): string {

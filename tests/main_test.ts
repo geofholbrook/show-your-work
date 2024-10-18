@@ -1,10 +1,5 @@
-import {
-  assertEquals,
-  assertMatch,
-  assertObjectMatch,
-  assertStrictEquals,
-} from "@std/assert";
-import A from "../src/main.ts";
+import { assertEquals, assertObjectMatch } from "@std/assert";
+import A from "../src/ArithmeticNode.ts";
 
 Deno.test(function basic() {
   const n = A(1);

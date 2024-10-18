@@ -1,4 +1,4 @@
-import A, { format } from "../src/main.ts";
+import A, { format } from "../src/ArithmeticNode.ts";
 
 const calc1 = format(A(1, "x").add(A(2, "y"), "sum"));
 console.log(calc1);
