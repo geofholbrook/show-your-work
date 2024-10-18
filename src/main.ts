@@ -1,23 +1,40 @@
 export type ArithmeticOperation = "Add" | "Subtract" | "Multiply" | "Divide";
 
-const operationMap = {
-  "Add": (a: number, b: number) => a + b,
-  "Subtract": (a: number, b: number) => a - b,
-  "Multiply": (a: number, b: number) => a * b,
-  "Divide": (a: number, b: number) => a / b,
+export const symbolMap = {
+  Add: "+",
+  Subtract: "-",
+  Multiply: "*",
+  Divide: "/",
 };
 
-class ArithmeticNode {
-  private readonly value: number;
-  name: string;
+export const operationMap = {
+  Add: (a: number, b: number) => a + b,
+  Subtract: (a: number, b: number) => a - b,
+  Multiply: (a: number, b: number) => a * b,
+  Divide: (a: number, b: number) => a / b,
+};
 
-  leftParent: ArithmeticNode | null = null;
-  rightParent: ArithmeticNode | null = null;
-  operation: ArithmeticOperation | null = null;
+export interface IArithmeticNode {
+  value: number;
+  name?: string;
+  derivesFrom?: {
+    operation: ArithmeticOperation;
+    left: IArithmeticNode;
+    right: IArithmeticNode;
+  };
+}
 
-  constructor(name: string, n: number) {
-    this.name = name;
+export class ArithmeticNode implements IArithmeticNode {
+  value: number;
+  name?: string;
+  derivesFrom?: {
+    operation: ArithmeticOperation;
+    left: ArithmeticNode;
+    right: ArithmeticNode;
+  };
+  constructor(n: number, name?: string) {
     this.value = n;
+    this.name = name;
   }
 
   valueOf(): number {
@@ -30,12 +47,14 @@ class ArithmeticNode {
     name?: string,
   ) {
     const newNode = new ArithmeticNode(
-      name || `${operation.toLowerCase()}_${this.name}_${node.name}`,
       operationMap[operation](this.value, node.valueOf()),
+      name,
     );
-    newNode.leftParent = this;
-    newNode.rightParent = node;
-    newNode.operation = operation;
+    newNode.derivesFrom = {
+      left: this,
+      right: node,
+      operation,
+    };
     return newNode;
   }
 
@@ -54,10 +73,24 @@ class ArithmeticNode {
   divide(node: ArithmeticNode, name?: string): ArithmeticNode {
     return this.createNewNode(node, "Divide", name);
   }
+
+  toJSON(): IArithmeticNode {
+    return {
+      value: this.value,
+      name: this.name,
+      derivesFrom: this.derivesFrom
+        ? {
+          operation: this.derivesFrom.operation,
+          left: this.derivesFrom.left.toJSON(),
+          right: this.derivesFrom.right.toJSON(),
+        }
+        : undefined,
+    };
+  }
 }
 
-function createArithmeticNode(name: string, n: number): ArithmeticNode {
-  return new ArithmeticNode(name, n);
+function createArithmeticNode(n: number, name?: string): ArithmeticNode {
+  return new ArithmeticNode(n, name);
 }
 
 export default createArithmeticNode;
