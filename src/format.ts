@@ -4,7 +4,8 @@ import { dim } from "@std/fmt/colors";
 export function format(node: IArithmeticNode, depth = 0): string {
   if (!node.derivesFrom) return formatValue(node);
 
-  const derivationString = node.derivesFrom &&
+  const derivationString =
+    node.derivesFrom &&
     `(${format(node.derivesFrom.left, depth + 1)} ${
       symbolMap[node.derivesFrom.operation]
     } ${format(node.derivesFrom.right, depth + 1)})`;
@@ -19,3 +20,4 @@ export function format(node: IArithmeticNode, depth = 0): string {
 function formatValue(node: IArithmeticNode): string {
   return `${node.value}${node.name ? ` ${dim(`(${node.name})`)}` : ""}`;
 }
+
